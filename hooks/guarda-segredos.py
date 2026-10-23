@@ -117,7 +117,7 @@ def verificar_arquivo(dados):
 
 def _handoffs():
     extra = os.environ.get("CLT_TEAM_HANDOFFS", "").rstrip("/")
-    base = r"/\.claude/clt-team/registros/handoffs/|/private/tmp/|/tmp/|/scratchpad/"
+    base = r"/\.claude/clt-team/registros/handoffs/|^/private/tmp/|^/tmp/"
     if extra:
         base += "|^" + re.escape(extra) + "/"
     return base
@@ -213,7 +213,7 @@ def teste():
         ("produto", "/home/dev/app/server/index.js", True),
         ("sre", "/home/dev/app/docs/RUNBOOK.md", False),
         ("sre", "/home/dev/app/migrations/1.sql", True),
-        ("marketing", "/home/dev/site/blog/posts/artigo.md", False),
+        ("marketing", "/home/dev/site/content/posts/x.md", False),
         ("marketing", "/home/dev/site/index.html", True),
     ]
     for perfil, caminho, esperado in escritas:

@@ -62,4 +62,9 @@ cd ~/.claude/agents && rm -f socio.md nerd.md seguranca.md designer.md editor.md
 cd ~/.claude/skills && rm -rf equipe equipe-toda socio nerd seguranca designer editor marketeiro traficante tesoureiro social-media
 # a base fica em ~/.claude/clt-team (apague se não quiser manter seus registros)
 ```
+Se o instalador substituiu agentes ou skills que você já tinha, restaure o backup mais recente:
+```bash
+ULTIMO=$(ls -d ~/.claude/clt-team-backup-* 2>/dev/null | tail -1)
+[ -n "$ULTIMO" ] && cp -Rp "$ULTIMO/.claude/." ~/.claude/
+```
 Confira antes de apagar se nenhum desses nomes pertence a outro agente ou skill seu.

@@ -27,7 +27,7 @@ Hook `PreToolUse` por perfil (`produto`, `qa`, `sre`, `marketing`) que bloqueia:
 - edição de `config/empresa.yaml` por sub-agentes.
 
 Teste: `python3 ~/.claude/clt-team/hooks/guarda-segredos.py --teste`.
-**Limites conhecidos:** não cobre ferramentas MCP; escrita via Bash (ex.: `echo > arquivo`) não é inspecionada pelo filtro de caminho; padrões novos de CLI podem escapar. Trate o hook como cinto de segurança, não como cofre.
+**Limites conhecidos:** não cobre ferramentas MCP; escrita via Bash (ex.: `echo > arquivo`) não é inspecionada pelo filtro de caminho; padrões novos de CLI podem escapar; se a entrada do hook não for JSON legível, ele libera (para não travar a sessão) em vez de bloquear. Trate o hook como cinto de segurança, não como cofre.
 
 ## 5. Higiene de segredos e dados
 - Segredos ficam no cofre ou nas variáveis do provedor. Nunca em prompts, handoffs, memória, `empresa.yaml`, commits ou screenshots.

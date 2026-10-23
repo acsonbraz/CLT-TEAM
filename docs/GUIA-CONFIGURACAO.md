@@ -55,7 +55,7 @@ marcas:
     design_system: "app-agenda/docs/DESIGN_SYSTEM.md"
     estado_design_system: nao_auditado
     voz: "literal, frases curtas, sem metáforas"
-    proibicoes: ["prometer resultado garantido", "falar de lucro do cliente"]
+    proibicoes: ["prometer resultado garantido", "prometer prazo de entrega"]
 ```
 `voz` e `proibicoes` são lidas por COPYWRITER, UX WRITER, SEO, CRM e SOCIAL-MEDIA. Coloque aqui as regras de comunicação da sua marca (o que nunca dizer, como grafar o nome, tom de emojis).
 
