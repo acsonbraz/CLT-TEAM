@@ -1,0 +1,25 @@
+# Configuração real da empresa e segredos: nunca versionar
+config/empresa.yaml
+config/*.local.yaml
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Registros operacionais (decisões e handoffs reais)
+registros/*
+!registros/DECISOES.example.md
+!registros/handoffs/
+registros/handoffs/*
+!registros/handoffs/.gitkeep
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+__pycache__/
+*.pyc

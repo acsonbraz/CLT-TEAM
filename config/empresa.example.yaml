@@ -1,0 +1,160 @@
+# CLT-TEAM — configuração da sua empresa (EXEMPLO)
+#
+# 1. Copie este arquivo para config/empresa.yaml (que é ignorado pelo git).
+# 2. Troque todos os {{PLACEHOLDERS}} pelos seus dados.
+# 3. Nunca coloque aqui senhas, tokens, chaves de API, dados de cartão ou
+#    dados pessoais de clientes. Este arquivo descreve QUEM é QUEM e QUAIS
+#    são os limites; segredos ficam no cofre/variáveis de ambiente.
+#
+# Os agentes leem este arquivo para saber a qual entidade jurídica pertence
+# cada projeto, quais marcas não se misturam, quais tetos de gasto estão
+# aprovados e quem aprova o quê. Guia completo: docs/GUIA-CONFIGURACAO.md
+
+versao: 1
+
+# ---------------------------------------------------------------------------
+# Proprietário e aprovação
+# ---------------------------------------------------------------------------
+proprietario:
+  nome_exibicao: "{{PROPRIETARIO}}"   # como os agentes se referem a você (ex.: "o proprietário")
+
+aprovacao:
+  # Palavra que o proprietário usa para autorizar ações A3 (publicar, gastar,
+  # enviar, apagar, deploy crítico). Formato esperado: "<palavra> <código>".
+  palavra: "APROVO"
+  # Onde o pedido de aprovação chega. Só funciona se houver integração real.
+  canal: "{{CANAL_APROVACAO}}"          # ex.: whatsapp | slack | email | sessao
+  # Quem pode aprovar cada tipo de ação. Use papéis ou nomes de exibição,
+  # nunca e-mail/telefone.
+  aprovadores:
+    gasto: ["{{PROPRIETARIO}}"]
+    publicacao: ["{{PROPRIETARIO}}"]
+    deploy_critico: ["{{PROPRIETARIO}}"]
+    dados_pessoais: ["{{PROPRIETARIO}}", "{{ENCARREGADO_DPO}}"]
+
+# ---------------------------------------------------------------------------
+# Entidades jurídicas (cada CNPJ é uma entidade separada)
+# ---------------------------------------------------------------------------
+entidades:
+  - id: "{{ENTIDADE_1_ID}}"             # ex.: empresa-tech
+    razao_social: "{{RAZAO_SOCIAL_1}}"
+    cnpj: "{{CNPJ_1}}"                   # formato 00.000.000/0000-00
+    tipo: "{{TIPO_1}}"                   # ex.: tecnologia | varejo | servicos
+    centro_de_custo: "{{CENTRO_CUSTO_1}}"
+  - id: "{{ENTIDADE_2_ID}}"
+    razao_social: "{{RAZAO_SOCIAL_2}}"
+    cnpj: "{{CNPJ_2}}"
+    tipo: "{{TIPO_2}}"
+    centro_de_custo: "{{CENTRO_CUSTO_2}}"
+
+# ---------------------------------------------------------------------------
+# Projetos
+# classificacao:
+#   comercial = produto que pode ser vendido (SaaS, app, serviço)
+#   interno   = ferramenta da própria operação (ERP, PDV, RH, chat, painéis);
+#               os agentes NUNCA propõem vendê-la sem decisão sua.
+# estado: ideia | mvp | venda | estavel | a_confirmar
+# ---------------------------------------------------------------------------
+projetos:
+  - id: "{{PROJETO_1}}"                  # slug usado nos pedidos: /nerd {{PROJETO_1}} ...
+    nome: "{{NOME_PROJETO_1}}"
+    entidade: "{{ENTIDADE_1_ID}}"
+    classificacao: comercial
+    estado: mvp
+    marca: "{{MARCA_1}}"
+    repositorio: "{{REPOSITORIO_1}}"     # caminho local ou URL; opcional
+    push_faz_deploy: false               # true se push na main publica sozinho
+  - id: "{{PROJETO_2}}"
+    nome: "{{NOME_PROJETO_2}}"
+    entidade: "{{ENTIDADE_2_ID}}"
+    classificacao: interno
+    estado: estavel
+    marca: "{{MARCA_2}}"
+    repositorio: "{{REPOSITORIO_2}}"
+    push_faz_deploy: false
+  # Sistema compartilhado entre entidades: use entidade: a_confirmar até
+  # haver contrato/evidência de titularidade.
+
+# Nomes parecidos que NÃO são o mesmo produto (os agentes vão alertar).
+nao_confundir:
+  - ["{{PROJETO_1}}", "{{PROJETO_2}}"]
+
+# ---------------------------------------------------------------------------
+# Marcas (identidades visuais e de voz nunca se misturam)
+# ---------------------------------------------------------------------------
+marcas:
+  - id: "{{MARCA_1}}"
+    entidade: "{{ENTIDADE_1_ID}}"
+    grafia_oficial: "{{GRAFIA_MARCA_1}}"
+    design_system: "{{CAMINHO_DESIGN_SYSTEM_1}}"   # ex.: repo/docs/DESIGN_SYSTEM.md
+    estado_design_system: nao_auditado            # nao_auditado | auditado | aprovado | ausente
+    voz: "{{VOZ_MARCA_1}}"                         # ex.: "literal, sem metáforas, tom profissional"
+    proibicoes: []                                 # ex.: ["prometer resultado garantido"]
+  - id: "{{MARCA_2}}"
+    entidade: "{{ENTIDADE_2_ID}}"
+    grafia_oficial: "{{GRAFIA_MARCA_2}}"
+    design_system: "{{CAMINHO_DESIGN_SYSTEM_2}}"
+    estado_design_system: nao_auditado
+    voz: "{{VOZ_MARCA_2}}"
+    proibicoes: []
+
+# Perfis de redes sociais. Só ficam ativos com integração real conectada.
+perfis_sociais:
+  - rede: instagram
+    handle: "{{HANDLE_INSTAGRAM_1}}"
+    marca: "{{MARCA_1}}"
+    entidade: "{{ENTIDADE_1_ID}}"
+    conectado: false
+
+# ---------------------------------------------------------------------------
+# Orçamentos aprovados (envelopes). Valor vazio ou "pendente" = sem permissão
+# de gastar: os agentes só preparam rascunho.
+# ---------------------------------------------------------------------------
+moeda: BRL
+orcamentos:
+  - projeto: "{{PROJETO_1}}"
+    canal: "{{CANAL_MIDIA}}"             # ex.: google_ads | meta_ads | infraestrutura
+    periodo: "{{PERIODO}}"               # ex.: 2026-01
+    teto: "{{TETO_MIDIA}}"               # número, ou "pendente"
+    status: pendente                     # pendente | aprovado | encerrado
+    entidade_beneficiaria: "{{ENTIDADE_1_ID}}"
+    entidade_pagadora: a_confirmar       # só preencha com fatura/extrato
+    aprovado_por: ""
+    aprovado_em: ""
+
+# Alertas de consumo emitidos pelo TESOUREIRO (percentual do teto).
+alertas_orcamento: [70, 90, 100]
+
+# ---------------------------------------------------------------------------
+# Autorizações permanentes (o que pode ser feito sem pedir a cada vez)
+# Deixe vazio para exigir aprovação sempre.
+# ---------------------------------------------------------------------------
+autorizacoes:
+  commit_push_automatico: []             # ids de projeto
+  deploy_automatico: []                  # ids de projeto
+  leitura_producao:                      # leitura de logs/banco em produção
+    - projeto: ""
+      modo: ""                           # ex.: logs | select
+      via: ""                            # ex.: mcp_plataforma | cli_ssh
+
+# ---------------------------------------------------------------------------
+# Ferramentas
+# ---------------------------------------------------------------------------
+ferramentas:
+  skill_video: "{{SKILL_VIDEO}}"         # nome da skill de edição de vídeo instalada (opcional)
+  envio_marketing: ""                    # ferramenta de e-mail marketing aprovada (vazio = nenhuma)
+  envio_transacional: ""                 # nunca usada para marketing
+  analytics_comportamental: []           # ex.: ["mapa-de-calor-x"]; só leitura
+  plataforma_deploy: "{{PLATAFORMA}}"    # ex.: railway | vercel | fly | kubernetes
+
+# ---------------------------------------------------------------------------
+# Privacidade (LGPD)
+# ---------------------------------------------------------------------------
+privacidade:
+  encarregado_dpo: "{{ENCARREGADO_DPO}}"  # papel/nome de exibição; contato fica na política publicada
+  advogado_responsavel: "{{ADVOGADO}}"    # papel/nome de exibição
+
+# Onde ficam handoffs e decisões (relativo a ~/.claude/clt-team/).
+registros:
+  handoffs: registros/handoffs
+  decisoes: registros/DECISOES.md
