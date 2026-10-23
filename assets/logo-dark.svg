@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 128" role="img" aria-label="CLT-TEAM (versão para fundo escuro)">
+<title>CLT-TEAM (versão para fundo escuro)</title>
+<g><rect width="128" height="128" rx="28" fill="#F9FAFB"/><path d="M64 44v22M64 66H34v20M64 66h30v20M64 66v20" fill="none" stroke="#111827" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="64" cy="34" r="12" fill="#0F766E"/><circle cx="34" cy="94" r="9" fill="#111827"/><circle cx="64" cy="94" r="9" fill="#111827"/><circle cx="94" cy="94" r="9" fill="#111827"/></g><text x="152" y="82" font-family="-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="64" font-weight="800" letter-spacing="1" fill="#F9FAFB">CLT<tspan fill="#2DD4BF">-</tspan>TEAM</text>
+</svg>
